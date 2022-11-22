@@ -80,7 +80,7 @@ const getRole = () => {
 };
 
 const getDepartment = () => {
-  return db.promise().query('SELECT * FROM departments;')
+  return db.promise().query('SELECT * FROM department;')
 };
 
 
@@ -112,8 +112,9 @@ const addEmp = () => {
         name: 'empMan',
         message: 'What is the managers id for this employee?',
       }
-    ]).then((data) => {
-      return db.promise().query('INSERT INTO employees (id, first_name, last_name, role_id, manager_id) VALUES' + (data.empId, data.firstName, data.lastName, data.empRole, data.empMan))
+    ])
+    .then((data) => {
+      return db.promise().query('INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES' + (data.empId, data.firstName, data.lastName, data.empRole, data.empMan))
     })
 };
 
