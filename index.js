@@ -38,35 +38,39 @@ const menu = () => {
           menu();
         })
       } else if (data.menu === 'Add Employee') {
-        addEmp().then((empData) => {
-          console.table(empData[0])
-          menu();
-        })
+        addEmp()
+        // .then((empData) => {
+        //   console.table(empData[0])
+        //   menu();
+        // })
       } else if (data.menu === 'Update Employee Role') {
-        updateRole().then((emplData) => {
-          console.table(emplData[0])
-          menu();
-        })
+        updateRole()
+        // .then((emplData) => {
+        //   console.table(emplData[0])
+        //   menu();
+        // })
       } else if (data.menu === "View All Roles") {
         getRole().then((roleData) => {
           console.table(roleData[0])
           menu();
         })
       } else if (data.menu === 'Add Role') {
-        addRole().then((rolData) => {
-          console.table(rolData[0])
-          menu();
-        })
+        addRole()
+        // .then((rolData) => {
+        //   console.table(rolData[0])
+        //   menu();
+        // })
       } else if (data.menu === "View All Departments") {
         getDepartment().then((deptData) => {
           console.table(deptData[0])
           menu();
         })
       } else if (data.menu === 'Add Department') {
-        addDept().then((depData) => {
-          console.table(depData[0])
-          menu();
-        })
+        addDept()
+        // .then((depData) => {
+        //   console.table(depData[0])
+        //   menu();
+        // })
       }
     });
 };
@@ -87,11 +91,11 @@ const getDepartment = () => {
 const addEmp = () => {
   inquirer
     .prompt([
-      {
-        type: 'input',
-        name: 'empId',
-        message: 'What is the new employees id?',
-      },
+      // {
+      //   type: 'input',
+      //   name: 'empId',
+      //   message: 'What is the new employees id?',
+      // },
       {
         type: 'input',
         name: 'firstName',
@@ -114,7 +118,13 @@ const addEmp = () => {
       }
     ])
     .then((data) => {
-      return db.promise().query('INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES' + (data.empId, data.firstName, data.lastName, data.empRole, data.empMan))
+      db.promise().query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES(?,?,?,?)', 
+      [data.firstName, data.lastName, data.empRole, data.empMan], 
+      // function(err, newEmployee) {
+      //   console.table(newEmployee)
+      // }
+      )
+      menu()
     })
 };
 
@@ -133,7 +143,8 @@ const updateRole = () => {
       },
     ])
     .then((data) => {
-      return db.promise().query('UPDATE employee SET role_id = ' + (data.empRole) + ' WHERE id = ' + (data.roleEmp))
+      db.promise().query('UPDATE employee SET role_id = ' + (data.empRole) + ' WHERE id = ' + (data.roleEmp))
+      menu()
     })
 };
 
@@ -162,7 +173,9 @@ const addRole = () => {
       },
     ])
     .then((data) => {
-      return db.promise().query('INSERT INTO role (id, title, salary, department_id) VALUES ' + (data.newId, data.newTitle, data.newSalary, data.newRole))
+      db.promise().query('INSERT INTO role (id, title, salary, department_id) VALUES(?,?,?,?)',
+       [data.newId, data.newTitle, data.newSalary, data.newRole])
+      menu()
     })
 };
 
@@ -181,7 +194,8 @@ const addDept = () => {
       },
     ])
     .then((data) => {
-      return db.promise().query('INSERT INTO department (id, name) VALUES '(data.newDeptId, data.newDept))
+      db.promise().query('INSERT INTO department (id, name) VALUES(?,?)', [data.newDeptId, data.newDept])
+      menu()
     })
 };
 
